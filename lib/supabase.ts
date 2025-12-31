@@ -22,6 +22,8 @@
 
 // Importa função para criar cliente Supabase
 import { createClient } from '@supabase/supabase-js';
+// Importa Platform para detectar se está rodando em web
+import { Platform } from 'react-native';
 
 // Variáveis de ambiente do projeto Supabase
 // EXPO_PUBLIC_ permite acesso no frontend (variáveis públicas)
@@ -33,6 +35,9 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
   throw new Error('Variáveis de ambiente do Supabase não configuradas!');
 }
 
+// Detecta se está rodando em web
+const isWeb = Platform.OS === 'web';
+
 /**
  * Cliente Supabase principal para uso no frontend
  * 
@@ -41,8 +46,8 @@ if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
  * 
  * CARACTERÍSTICAS:
  * - Renova tokens automaticamente quando expiram
- * - Persiste sessão de usuário no AsyncStorage
- * - Não detecta sessões via URL (mobile app)
+ * - Persiste sessão de usuário no AsyncStorage (mobile) ou localStorage (web)
+ * - Detecta sessões via URL apenas em web (para callbacks de autenticação)
  */
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
@@ -50,8 +55,9 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     autoRefreshToken: true,
     // Persiste sessão do usuário entre fechamentos do app
     persistSession: true,
-    // Não tenta detectar sessão na URL (não é web app)
-    detectSessionInUrl: false,
+    // Detecta sessão na URL apenas em web (necessário para callbacks de autenticação)
+    // Em mobile, deve ser false para evitar problemas
+    detectSessionInUrl: isWeb,
   },
 });
 

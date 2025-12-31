@@ -1,0 +1,46 @@
+# Arquivos e pastas a ignorar no deploy Vercel
+
+# Dependências (serão instaladas no build)
+node_modules/
+
+# Arquivos de build local
+.expo/
+dist/
+.output/
+
+# Arquivos de configuração local
+.env
+.env.local
+.env.*.local
+
+# Documentação
+docs/
+*.md
+!README.md
+
+# Scripts de desenvolvimento
+scripts/
+
+# Migrations (não precisam estar no deploy)
+supabase/migrations/
+
+# Arquivos de debug
+*.log
+.DS_Store
+Thumbs.db
+
+# Arquivos de teste
+__tests__/
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Git
+.git/
+.gitignore
+
